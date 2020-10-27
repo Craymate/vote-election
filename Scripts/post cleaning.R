@@ -2,13 +2,13 @@ library(haven)
 library(tidyverse)
 library(labelled)
 
-raw_data <- read_dta("./Inputs/usa_00002.dta")
+raw_data <- read_dta("./Inputs/usa_00003.dta")
 
 raw_data <- labelled::to_factor(raw_data)
 
 reduced_data <- 
   raw_data %>%
-  select(age, sex, stateicp, race, educ, hispan)
+  select(age, sex, stateicp, race, educd, hispan)
 
 reduced_data <- as.data.frame(reduced_data)
 
@@ -65,51 +65,48 @@ mut_age <- function(x){
 reduced_data <- reduced_data %>%
   mutate(age = mut_age(as.vector(age)))
 
-mut_educ <- function(x){
+mut_educd <- function(x){
   for(i in 1:length(x)){
-    if (x[i] == "n/a or no schooling"){
-      x[i] <- "3rd Grade or less"
-    };
-    if (x[i] == "grade 5, 6, 7, or 8"){
-      x[i] <- "Middle School - Grades 4 - 8"
-    };
-    if (x[i] ==" 1 year of college"){
+    if (x[i] == "1 or more years of college credit, no degree" | x[i] == "some college, but less than 1 year"){
       x[i] <- "Completed some college, but no degree"
     };
-    if (x[i] == "2 years of college"){
-      x[i] <- "Completed some college, but no degree"
-    };
-    if (x[i] == "4 years of college"){
-      x[i] <- "Completed some college, but no degree"
-    };
-    if (x[i] == "5+ years of college"){
-      x[i] <- "College Degree (such as B.A., B.S.)"
-    };
-    if (x[i] == "grade 9"){
-      x[i] <- "Doctorate degree"
-    };
-    if (x[i] == "nursery school to grade 4"){
-      x[i] <- "Completed some high school"
-    };
-    if (x[i] == "grade 10"){
-      x[i] <- "Completed some high school"
-    };
-    if (x[i] == "grade 11"){
-      x[i] <- "Completed some high school"
-    };
-    if (x[i] == "grade 12"){
+    if (x[i] == "regular high school diploma"){
       x[i] <- "High school graduate"
     };
+    if (x[i] == "associate's degree, type not specified"){
+      x[i] <- "Associate Degree"
+    };
+    if (x[i] == "bachelor's degree" | x[i] == "professional degree beyond a bachelor's degree"){
+      x[i] <- "College Degree (such as B.A., B.S.)"
+    };
+    if (x[i] == "ged or alternative credential"){
+      x[i] <- "Other post high school vocational training"
+    };
+    if (x[i] == "master's degree"){
+      x[i] <- "Masters degree"
+    };
+    if (x[i] == "nursery school, preschool" | x[i] == "doctoral degree"){
+      x[i] <- "Doctorate degree"
+    };
+    if (x[i] == "grade 1" | x[i] == "grade 2" | x[i] == "grade 3" | x[i] == "no schooling completed" | x[i] == "kindergarten" | x[i] == "n/a"){
+      x[i] <- "3rd Grade or less"
+    };
+    if (x[i] == "grade 4" | x[i] == "grade 5" | x[i] == "grade 6" | x[i] == "grade 7" | x[i] == "grade 8"){
+      x[i] <- "Middle School - Grades 4 - 8"
+    };
+    if (x[i] == "12th grade, no diploma" | x[i] == "grade 10" | x[i] == "grade 11" | x[i] == "grade 9"){
+      x[i] <- "Completed some high school"
+    }
   }
   return(x)
 }
 
 
 reduced_data <- reduced_data %>%
-  mutate(educ = mut_educ(as.vector(educ)))
+  mutate(educd = mut_educd(as.vector(educd)))
 
 census <- reduced_data %>%
-  group_by(state, sex, age, race, educ, hispan) %>%
+  group_by(state, sex, age, race, educd, hispan) %>%
   count(name = "Number")
 
 total <- reduced_data %>%
