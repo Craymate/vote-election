@@ -1,4 +1,4 @@
-"","state","sex","age","race","educ","hispan","Number","Proportion"
+"","state","gender","age","race","educ","hispan","Number","Proportion"
 "1","AK","male","18 to 29","american indian or alaska native","3rd Grade or less","not hispanic",1,0.000763358778625954
 "2","AK","male","18 to 29","white","3rd Grade or less","not hispanic",6,0.00458015267175573
 "3","AK","male","45 to 55","american indian or alaska native","1 year of college","not hispanic",12,0.00916030534351145

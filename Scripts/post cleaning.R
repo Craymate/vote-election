@@ -121,6 +121,7 @@ census <- census %>%
 
 census <- census %>%
   mutate(n = Number/n) %>%
-  rename(Proportion = n)
+  rename(Proportion = n) %>%
+  rename(gender = sex)
 
 write.csv(census, "./Outputs/census_data.csv")
