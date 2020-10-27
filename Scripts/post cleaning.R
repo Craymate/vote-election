@@ -8,7 +8,7 @@ raw_data <- labelled::to_factor(raw_data)
 
 reduced_data <- 
   raw_data %>%
-  select(age, sex, stateicp, race, educd, hispan)
+  select(age, sex, stateicp, race, educd)
 
 reduced_data <- as.data.frame(reduced_data)
 
@@ -106,7 +106,7 @@ reduced_data <- reduced_data %>%
   mutate(educd = mut_educd(as.vector(educd)))
 
 census <- reduced_data %>%
-  group_by(state, sex, age, race, educd, hispan) %>%
+  group_by(state, sex, age, race, educd) %>%
   count(name = "Number")
 
 total <- reduced_data %>%
