@@ -22,9 +22,6 @@ mut_race <- function(x){
     if (x[i] == "black/african american/negro"){
       x[i] <- "black/african american"
     };
-    if (x[i] == "other race, nec"){
-      x[i] <- "Other"
-    };
     if (x[i] == "two major races"){
       x[i] <- "other race, nec"
     };
